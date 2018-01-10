@@ -1,0 +1,604 @@
+DB2 Universal Database Version 11.1, 5622-044 (c) Copyright IBM Corp. 1991, 2015
+Licensed Material - Program Property of IBM
+IBM DATABASE 2 Explain Table Format Tool
+
+
+
+******************** EXPLAIN INSTANCE ********************
+
+DB2_VERSION:       11.01.2
+FORMATTED ON DB:   SAMPLE
+SOURCE_NAME:       SQLC2O26
+SOURCE_SCHEMA:     NULLID  
+SOURCE_VERSION:      
+EXPLAIN_TIME:      2017-09-24-21.27.06.357000
+EXPLAIN_REQUESTER: VINOD   
+
+Database Context:
+----------------
+	Parallelism:          None
+	CPU Speed:            9.446885e-008
+	Comm Speed:           0
+	Buffer Pool size:     250
+	Sort Heap size:       256
+	Database Heap size:   600
+	Lock List size:       4096
+	Maximum Lock List:    22
+	Average Applications: 1
+	Locks Available:      28835
+
+Package Context:
+---------------
+	SQL Type:           Dynamic
+	Optimization Level: 5
+	Blocking:           Block All Cursors
+	Isolation Level:    Cursor Stability
+
+
+
+---------------- STATEMENT 1  SECTION 201 ----------------
+	QUERYNO:       17
+	QUERYTAG:      CLP                 
+	Statement Type:   Select
+	Updatable:        No
+	Deletable:        No
+	Query Degree:     1
+
+Original Statement:
+------------------
+Select 
+  count(sgrade),
+  sgrade 
+from 
+  school.students 
+group by 
+  sgrade 
+order by 
+  count(sgrade) ASC
+
+
+Optimized Statement:
+-------------------
+SELECT 
+  Q3.$C1,
+  Q3.SGRADE AS "SGRADE" 
+FROM 
+  (SELECT 
+     Q2.SGRADE,
+     COUNT(*) 
+   FROM 
+     (SELECT 
+        Q1.SGRADE 
+      FROM 
+        SCHOOL.STUDENTS AS Q1
+     ) AS Q2 
+   GROUP BY 
+     Q2.SGRADE
+  ) AS Q3 
+ORDER BY 
+  Q3.$C1
+
+Access Plan:
+-----------
+	Total Cost: 		6.81268
+	Query Degree:		1
+
+
+      Rows 
+     RETURN
+     (   1)
+      Cost 
+       I/O 
+       |
+        4 
+     TBSCAN
+     (   2)
+     6.81268 
+        1 
+       |
+        4 
+     SORT  
+     (   3)
+     6.81244 
+        1 
+       |
+        4 
+     GRPBY 
+     (   4)
+     6.81173 
+        1 
+       |
+        5 
+     TBSCAN
+     (   5)
+     6.81158 
+        1 
+       |
+        5 
+     SORT  
+     (   6)
+     6.81132 
+        1 
+       |
+        5 
+     TBSCAN
+     (   7)
+     6.81076 
+        1 
+       |
+        5 
+ TABLE: SCHOOL  
+    STUDENTS
+       Q1
+
+
+
+Extended Diagnostic Information:
+--------------------------------
+
+No extended Diagnostic Information for this statement.
+
+
+Plan Details:
+-------------
+
+
+	1) RETURN: (Return Result)
+		Cumulative Total Cost: 		6.81268
+		Cumulative CPU Cost: 		81249.4
+		Cumulative I/O Cost: 		1
+		Cumulative Re-Total Cost: 	0.00183317
+		Cumulative Re-CPU Cost: 	19405
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	6.81258
+		Estimated Bufferpool Buffers: 	0
+
+		Arguments:
+		---------
+		BLDLEVEL: (Build level)
+			DB2 v11.1.2020.1393 : s1706091900
+		HEAPUSE : (Maximum Statement Heap Usage)
+			80 Pages
+		PLANID  : (Access plan identifier)
+			a28c5c3fbd568550
+		PREPTIME: (Statement prepare time)
+			       205 milliseconds
+		SEMEVID : (Semantic environment identifier)
+			0000000000000001
+		STMTHEAP: (Statement heap size)
+			8192
+		STMTID  : (Normalized statement identifier)
+			b011cf7f47933ec7
+
+		Input Streams:
+		-------------
+			7) From Operator #2
+
+				Estimated number of rows: 	4
+				Number of columns: 		2
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q4.$C0(A)+Q4.SGRADE
+
+
+	2) TBSCAN: (Table Scan)
+		Cumulative Total Cost: 		6.81268
+		Cumulative CPU Cost: 		81249.4
+		Cumulative I/O Cost: 		1
+		Cumulative Re-Total Cost: 	0.00183317
+		Cumulative Re-CPU Cost: 	19405
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	6.81258
+		Estimated Bufferpool Buffers: 	0
+
+		Arguments:
+		---------
+		MAXPAGES: (Maximum pages for prefetch)
+			ALL
+		PREFETCH: (Type of Prefetch)
+			NONE                
+		SCANDIR : (Scan Direction)
+			FORWARD
+		SPEED   : (Assumed speed of scan, in sharing structures)
+			SLOW
+		THROTTLE: (Scan may be throttled, for scan sharing)
+			FALSE
+		VISIBLE : (May be included in scan sharing structures)
+			FALSE
+		WRAPPING: (Scan may start anywhere and wrap)
+			FALSE
+
+		Input Streams:
+		-------------
+			6) From Operator #3
+
+				Estimated number of rows: 	4
+				Number of columns: 		2
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q3.$C1(A)+Q3.SGRADE
+
+
+		Output Streams:
+		--------------
+			7) To Operator #1
+
+				Estimated number of rows: 	4
+				Number of columns: 		2
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q4.$C0(A)+Q4.SGRADE
+
+
+	3) SORT  : (Sort)
+		Cumulative Total Cost: 		6.81244
+		Cumulative CPU Cost: 		78712.4
+		Cumulative I/O Cost: 		1
+		Cumulative Re-Total Cost: 	0.0015935
+		Cumulative Re-CPU Cost: 	16868
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	6.81244
+		Estimated Bufferpool Buffers: 	0
+
+		Arguments:
+		---------
+		DUPLWARN: (Duplicates Warning flag)
+			FALSE
+		KEYS    : (Key cardinality)
+			3
+		NUMROWS : (Estimated number of rows)
+			4
+		ROWWIDTH: (Estimated width of rows)
+			12.000000
+		SORTKEY : (Sort Key column)
+			1: Q3.$C1(A)
+		TEMPSIZE: (Temporary Table Page Size)
+			8192
+		UNIQUE  : (Uniqueness required flag)
+			FALSE
+
+		Input Streams:
+		-------------
+			5) From Operator #4
+
+				Estimated number of rows: 	4
+				Number of columns: 		2
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q3.$C1+Q3.SGRADE
+
+
+		Output Streams:
+		--------------
+			6) To Operator #2
+
+				Estimated number of rows: 	4
+				Number of columns: 		2
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q3.$C1(A)+Q3.SGRADE
+
+
+	4) GRPBY : (Group By)
+		Cumulative Total Cost: 		6.81173
+		Cumulative CPU Cost: 		71191.4
+		Cumulative I/O Cost: 		1
+		Cumulative Re-Total Cost: 	0.00138331
+		Cumulative Re-CPU Cost: 	14643
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	6.8115
+		Estimated Bufferpool Buffers: 	0
+
+		Arguments:
+		---------
+		AGGMODE : (Aggregation Mode)
+			COMPLETE
+		GROUPBYC: (Group By columns)
+			TRUE
+		GROUPBYN: (Number of Group By columns)
+			1
+		GROUPBYR: (Group By requirement)
+			1: Q2.SGRADE
+		ONEFETCH: (One Fetch flag)
+			FALSE
+
+		Input Streams:
+		-------------
+			4) From Operator #5
+
+				Estimated number of rows: 	5
+				Number of columns: 		1
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q2.SGRADE(A)
+
+
+		Output Streams:
+		--------------
+			5) To Operator #3
+
+				Estimated number of rows: 	4
+				Number of columns: 		2
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q3.$C1+Q3.SGRADE
+
+
+	5) TBSCAN: (Table Scan)
+		Cumulative Total Cost: 		6.81158
+		Cumulative CPU Cost: 		69667.4
+		Cumulative I/O Cost: 		1
+		Cumulative Re-Total Cost: 	0.00123934
+		Cumulative Re-CPU Cost: 	13119
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	6.81146
+		Estimated Bufferpool Buffers: 	0
+
+		Arguments:
+		---------
+		MAXPAGES: (Maximum pages for prefetch)
+			ALL
+		PREFETCH: (Type of Prefetch)
+			NONE                
+		SCANDIR : (Scan Direction)
+			FORWARD
+		SPEED   : (Assumed speed of scan, in sharing structures)
+			SLOW
+		THROTTLE: (Scan may be throttled, for scan sharing)
+			FALSE
+		VISIBLE : (May be included in scan sharing structures)
+			FALSE
+		WRAPPING: (Scan may start anywhere and wrap)
+			FALSE
+
+		Input Streams:
+		-------------
+			3) From Operator #6
+
+				Estimated number of rows: 	5
+				Number of columns: 		1
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q2.SGRADE(A)
+
+
+		Output Streams:
+		--------------
+			4) To Operator #4
+
+				Estimated number of rows: 	5
+				Number of columns: 		1
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q2.SGRADE(A)
+
+
+	6) SORT  : (Sort)
+		Cumulative Total Cost: 		6.81132
+		Cumulative CPU Cost: 		66880.4
+		Cumulative I/O Cost: 		1
+		Cumulative Re-Total Cost: 	0.000976052
+		Cumulative Re-CPU Cost: 	10332
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	6.81132
+		Estimated Bufferpool Buffers: 	1
+
+		Arguments:
+		---------
+		DUPLWARN: (Duplicates Warning flag)
+			FALSE
+		KEYS    : (Key cardinality)
+			4
+		NUMROWS : (Estimated number of rows)
+			5
+		ROWWIDTH: (Estimated width of rows)
+			12.000000
+		SORTKEY : (Sort Key column)
+			1: Q2.SGRADE(A)
+		TEMPSIZE: (Temporary Table Page Size)
+			8192
+		UNIQUE  : (Uniqueness required flag)
+			FALSE
+
+		Input Streams:
+		-------------
+			2) From Operator #7
+
+				Estimated number of rows: 	5
+				Number of columns: 		1
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q2.SGRADE
+
+
+		Output Streams:
+		--------------
+			3) To Operator #5
+
+				Estimated number of rows: 	5
+				Number of columns: 		1
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q2.SGRADE(A)
+
+
+	7) TBSCAN: (Table Scan)
+		Cumulative Total Cost: 		6.81076
+		Cumulative CPU Cost: 		60925
+		Cumulative I/O Cost: 		1
+		Cumulative Re-Total Cost: 	0.000976052
+		Cumulative Re-CPU Cost: 	10332
+		Cumulative Re-I/O Cost: 	0
+		Cumulative First Row Cost: 	6.80994
+		Estimated Bufferpool Buffers: 	1
+
+		Arguments:
+		---------
+		CUR_COMM: (Currently Committed)
+			TRUE
+		LCKAVOID: (Lock Avoidance)
+			TRUE
+		MAXPAGES: (Maximum pages for prefetch)
+			ALL
+		PREFETCH: (Type of Prefetch)
+			NONE                
+		ROWLOCK : (Row Lock intent)
+			SHARE (CS/RS)
+		SCANDIR : (Scan Direction)
+			FORWARD
+		SKIP_INS: (Skip Inserted Rows)
+			TRUE
+		SPEED   : (Assumed speed of scan, in sharing structures)
+			FAST
+		TABLOCK : (Table Lock intent)
+			INTENT SHARE
+		TBISOLVL: (Table access Isolation Level)
+			CURSOR STABILITY
+		THROTTLE: (Scan may be throttled, for scan sharing)
+			TRUE
+		VISIBLE : (May be included in scan sharing structures)
+			TRUE
+		WRAPPING: (Scan may start anywhere and wrap)
+			TRUE
+
+		Input Streams:
+		-------------
+			1) From Object SCHOOL.STUDENTS
+
+				Estimated number of rows: 	5
+				Number of columns: 		2
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q1.$RID$+Q1.SGRADE
+
+
+		Output Streams:
+		--------------
+			2) To Operator #6
+
+				Estimated number of rows: 	5
+				Number of columns: 		1
+				Subquery predicate ID: 		Not Applicable
+
+				Column Names:
+				------------
+				+Q2.SGRADE
+
+
+Objects Used in Access Plan:
+---------------------------
+
+	Schema: SCHOOL  
+	Name: 	STUDENTS
+	Type: 	Table
+
+
+Extended Statistics Information:
+--------------------------------
+
+Tablespace Context:
+-------------------
+		Name:                                         	USERSPACE1
+		Overhead:                                     	6.725000 
+		Transfer Rate:                                	0.080000 
+		Prefetch Size:                                	32 
+		Extent Size:                                  	32 
+		Type:                                         	Database managed
+		Partition Group Name:                         	NULLP
+		Buffer Pool Identifier:                       	0 
+
+Base Table Statistics:
+----------------------
+Name  : 	STUDENTS
+Schema: 	SCHOOL  
+		Number of Columns:                            	4 
+		Number of Pages with Rows:                    	1
+		Number of Meta Pages:                         	0
+		Number of Pages:                              	1
+		Number of Rows:                               	5
+		Table Overflow Record Count:                  	0
+		Width of Rows:                                	35 
+		Time of Creation:                             	2017-09-24-21.21.35.246001
+		Last Statistics Update:                       	2017-09-24-21.25.28.219002
+		Primary Tablespace:                           	USERSPACE1
+		Tablespace for Indexes:                       	NULLP
+		Tablespace for Long Data:                     	NULLP
+		Number of Referenced Columns:                 	1 
+		Number of Indexes:                            	0 
+		Volatile Table:                               	No
+		Number of Active Blocks:                      	-1
+		Number of Column Groups:                      	0 
+		Number of Data Partitions:                    	1 
+		Average Row Compression Ratio:                	-1.000000 
+		Percent Rows Compressed:                      	-1.000000 
+		Average Compressed Row Size:                  	-1 
+		Statistics Type:                              	S
+		Number of Worker Nodes:                       	0 
+
+	Column Information:
+	--------------------
+		Number:                                       	4 
+		Name:                                         	SGRADE
+		DFS Partition Column:                         	No
+		Statistics Available:                         	Yes
+
+		Column Statistics:
+		------------------
+			Schema name of the column type:               	SYSIBM  
+			Name of column type:                          	VARCHAR
+			Maximum column length:                        	10 
+			Scale for decimal or timestamp column:        	0 
+			Number of distinct column values:             	4
+			Average column length:                        	5 
+			Number of most frequent values:               	1 
+			Number of quantiles:                          	5 
+			Second highest data value:                    	F
+			Second lowest data value:                     	B
+			Column sequence in partition key:             	0 
+			Average number of sub-elements:               	-1 
+			Average length of delimiters:                 	-1 
+			Percentage encoded column values:             	-1 
+			Column clustering:                            	-1 
+			Average encoded column length:                	-1.000000 
+
+		Column Distribution Statistics:
+		-------------------------------
+			Frequency Statistics:
+			Valcount	Value 
+			--------------------------------
+			2 		B		
+
+			Quantile Statistics:
+			Valcount 	Value 		Distcount 
+			----------------------------------------------
+			1 		A		0
+			3 		B		0
+			4 		F		0
+			4 		O		0
+			5 		O		0
+
+

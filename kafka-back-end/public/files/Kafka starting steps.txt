@@ -1,0 +1,24 @@
+path:  C:\kafka_2.11-0.11.0.1\bin\windows
+
+step1:
+
+set path of zookeeper-data and kafka-logs folder in zookeeper.properties and server.properties.
+
+step2:
+
+start zookeeper server:
+\bin\windows\zookeeper-server-start.bat ..\..\config\zookeeper.properties
+
+Start kafka server:
+bin\windows>kafka-server-start.bat ..\..\config\server.properties
+
+Create topic:
+\bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic mytopic
+
+create producer:
+<kafka_dir>\bin\windows\kafka-console-producer.bat --broker-list localhost:9092 --topic mytopic
+
+consumer:
+<kafka_dir>\bin\windows\kafka-console-consumer.bat --zookeeper localhost:2181 --topic mytopic 
+
+
